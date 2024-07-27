@@ -25,15 +25,15 @@ public class BlogPost {
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "post_id_images")  // Custom join column name for images
+    @JoinColumn(name = "post_id")  // Custom join column name for images
     private List<BlogImage> images;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "post_id_audios")  // Custom join column name for audios
+    @JoinColumn(name = "post_id")  // Custom join column name for audios
     private List<BlogAudio> audios;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "post_id_videos")  // Custom join column name for videos
+    @JoinColumn(name = "post_id")  // Custom join column name for videos
     private List<BlogVideo> videos;
 
 }
