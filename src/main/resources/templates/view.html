@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Blog Post</title>
+</head>
+<body>
+    <h1>Blog Post ID: <span th:text="${id}"></span></h1>
+    <h1 id="title"></h1>
+    <p id="content"></p>
+    <div>
+        <h3>Image</h3>
+        <img id="image" alt="Blog Post Image" style="max-width: 100%; height: auto;">
+    </div>
+    <div>
+        <h3>Audio</h3>
+        <audio id="audio" controls></audio>
+    </div>
+    <div>
+        <h3>Video</h3>
+        <video id="video" controls style="max-width: 100%; height: auto;"></video>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var bid = [[${id}]];
+        console.log("Bid is ", bid);
+        fetch(`http://localhost:8080/api/blogposts/${bid}`)
+            .then(response => response.json())
+            .then(blogPost => {
+                document.getElementById('title').innerText = blogPost.title;
+                document.getElementById('content').innerText = blogPost.content;
+                document.getElementById('image').src = `data:image/jpeg;base64,${blogPost.image}`;
+                document.getElementById('audio').src = `data:audio/mp3;base64,${blogPost.audio}`;
+                document.getElementById('video').src = `data:video/mp4;base64,${blogPost.video}`;
+            })
+            .catch(error => console.error('Error fetching blog post:', error));
+        /*]]>*/
+    </script>
+</body>
+</html>
