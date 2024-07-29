@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.multimedia.blogpost.model.Audio;
 import com.multimedia.blogpost.model.Image;
 import com.multimedia.blogpost.model.News;
 import com.multimedia.blogpost.service.NewsService;
@@ -13,6 +14,7 @@ import com.multimedia.blogpost.service.NewsService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/news")
 public class NewsController {
@@ -23,22 +25,39 @@ public class NewsController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<News> createNews(
             @RequestParam("title") String title,
-            @RequestParam("images") MultipartFile[] images) {
-        
+            @RequestParam(value = "images", required = false) MultipartFile[] images,
+            @RequestParam(value = "audios", required = false) MultipartFile[] audios) {
+
         List<Image> imageList = new ArrayList<>();
-        for (MultipartFile file : images) {
-            try {
-                byte[] bytes = file.getBytes();
-                String base64Image = java.util.Base64.getEncoder().encodeToString(bytes);
-                imageList.add(Image.builder().url(base64Image).build());
-            } catch (IOException e) {
-                return ResponseEntity.badRequest().build();
+        if (images != null) {
+            for (MultipartFile file : images) {
+                try {
+                    byte[] bytes = file.getBytes();
+                    String base64Image = java.util.Base64.getEncoder().encodeToString(bytes);
+                    imageList.add(Image.builder().url(base64Image).build());
+                } catch (IOException e) {
+                    return ResponseEntity.badRequest().build();
+                }
             }
         }
-        
+
+        List<Audio> audioList = new ArrayList<>();
+        if (audios != null) {
+            for (MultipartFile file : audios) {
+                try {
+                    byte[] bytes = file.getBytes();
+                    String base64Audio = java.util.Base64.getEncoder().encodeToString(bytes);
+                    audioList.add(Audio.builder().url(base64Audio).build());
+                } catch (IOException e) {
+                    return ResponseEntity.badRequest().build();
+                }
+            }
+        }
+
         News news = News.builder()
                         .title(title)
                         .images(imageList)
+                        .audios(audioList)
                         .build();
 
         News savedNews = newsService.saveNews(news);

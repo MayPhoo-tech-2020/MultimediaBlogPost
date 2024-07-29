@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Image {
+public class Audio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

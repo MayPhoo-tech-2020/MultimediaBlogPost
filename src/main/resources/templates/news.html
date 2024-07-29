@@ -17,6 +17,9 @@
             height: auto;
             margin-bottom: 10px;
         }
+        .news-audio {
+            margin-bottom: 10px;
+        }
         .news-item {
             margin-bottom: 20px;
             border: 1px solid #ddd;
@@ -29,8 +32,16 @@
     <div class="news-container" th:each="news : ${newsList}">
         <div class="news-item">
             <div class="news-title" th:text="${news.title}">Sample News Title</div>
+            
             <div class="news-images" th:each="image : ${news.images}">
                 <img class="news-image" th:src="'data:image/jpeg;base64,' + ${image.url}" alt="News Image"/>
+            </div>
+            
+            <div class="news-audios" th:each="audio : ${news.audios}">
+                <audio class="news-audio" controls>
+                    <source th:src="'data:audio/mpeg;base64,' + ${audio.url}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
             </div>
         </div>
     </div>

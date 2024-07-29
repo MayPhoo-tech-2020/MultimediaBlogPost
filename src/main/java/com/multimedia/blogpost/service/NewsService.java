@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.multimedia.blogpost.model.Audio;
 import com.multimedia.blogpost.model.Image;
 import com.multimedia.blogpost.model.News;
 import com.multimedia.blogpost.repository.NewsRepository;
@@ -24,6 +25,13 @@ public class NewsService {
                 image.setNews(news);
             }
         }
+
+        if (news.getAudios() != null) {
+            for (Audio audio : news.getAudios()) {
+                audio.setNews(news);
+            }
+        }
+
         return newsRepository.save(news);
     }
 
