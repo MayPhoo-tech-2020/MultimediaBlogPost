@@ -12,12 +12,21 @@
             font-size: 24px;
             margin-bottom: 10px;
         }
+        .news-description {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
         .news-image {
             max-width: 100%;
             height: auto;
             margin-bottom: 10px;
         }
         .news-audio {
+            margin-bottom: 10px;
+        }
+        .news-video {
+            max-width: 100%;
+            height: auto;
             margin-bottom: 10px;
         }
         .news-item {
@@ -32,6 +41,7 @@
     <div class="news-container" th:each="news : ${newsList}">
         <div class="news-item">
             <div class="news-title" th:text="${news.title}">Sample News Title</div>
+            <div class="news-description" th:text="${news.description}">Sample News Description</div>
             
             <div class="news-images" th:each="image : ${news.images}">
                 <img class="news-image" th:src="'data:image/jpeg;base64,' + ${image.url}" alt="News Image"/>
@@ -42,6 +52,13 @@
                     <source th:src="'data:audio/mpeg;base64,' + ${audio.url}" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
+            </div>
+
+            <div class="news-videos" th:each="video : ${news.videos}">
+                <video class="news-video" controls>
+                    <source th:src="'data:video/mp4;base64,' + ${video.url}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
         </div>
     </div>

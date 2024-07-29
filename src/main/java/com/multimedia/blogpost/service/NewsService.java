@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.multimedia.blogpost.model.Audio;
 import com.multimedia.blogpost.model.Image;
 import com.multimedia.blogpost.model.News;
+import com.multimedia.blogpost.model.Video;
 import com.multimedia.blogpost.repository.NewsRepository;
 
 import jakarta.transaction.Transactional;
@@ -29,6 +30,12 @@ public class NewsService {
         if (news.getAudios() != null) {
             for (Audio audio : news.getAudios()) {
                 audio.setNews(news);
+            }
+        }
+
+        if (news.getVideos() != null) {
+            for (Video video : news.getVideos()) {
+                video.setNews(news);
             }
         }
 

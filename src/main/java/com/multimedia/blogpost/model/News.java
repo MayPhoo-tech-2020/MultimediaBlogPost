@@ -15,6 +15,7 @@ public class News {
     private Long id;
 
     private String title;
+    private String description;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
@@ -23,4 +24,8 @@ public class News {
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Audio> audios = new ArrayList<>();
+
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Video> videos = new ArrayList<>();
 }
