@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>News</title>
+    <style>
+        .news-container {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .news-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .news-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .news-item {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="news-container" th:each="news : ${newsList}">
+        <div class="news-item">
+            <div class="news-title" th:text="${news.title}">Sample News Title</div>
+            <div class="news-images" th:each="image : ${news.images}">
+                <img class="news-image" th:src="'data:image/jpeg;base64,' + ${image.url}" alt="News Image"/>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
