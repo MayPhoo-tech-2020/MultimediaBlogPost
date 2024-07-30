@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.multimedia.blogpost.service.NewsService;
 
 @Controller
-public class NewsViewController {
+public class ViewNewsController {
 
     @Autowired
     private NewsService newsService;
