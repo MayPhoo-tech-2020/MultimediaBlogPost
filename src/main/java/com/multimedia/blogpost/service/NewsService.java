@@ -1,6 +1,7 @@
 package com.multimedia.blogpost.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,57 @@ public class NewsService {
 
     public List<News> getAllNews() {
         return newsRepository.findAll();
+    }
+
+    public News updateNews(Long id, News updatedNews) {
+        Optional<News> existingNewsOpt = newsRepository.findById(id);
+        if (existingNewsOpt.isPresent()) {
+            News existingNews = existingNewsOpt.get();
+
+            // Update fields of existingNews with data from updatedNews
+            existingNews.setTitle(updatedNews.getTitle());
+            existingNews.setDescription(updatedNews.getDescription());
+
+            // Clear and update images
+            if (updatedNews.getImages() != null) {
+                existingNews.getImages().clear();
+                for (Image image : updatedNews.getImages()) {
+                    image.setNews(existingNews);
+                    existingNews.getImages().add(image);
+                }
+            }
+
+            // Clear and update audios
+            if (updatedNews.getAudios() != null) {
+                existingNews.getAudios().clear();
+                for (Audio audio : updatedNews.getAudios()) {
+                    audio.setNews(existingNews);
+                    existingNews.getAudios().add(audio);
+                }
+            }
+
+            // Clear and update videos
+            if (updatedNews.getVideos() != null) {
+                existingNews.getVideos().clear();
+                for (Video video : updatedNews.getVideos()) {
+                    video.setNews(existingNews);
+                    existingNews.getVideos().add(video);
+                }
+            }
+
+            return newsRepository.save(existingNews);
+        } else {
+            // Handle the case where the News entity with the given ID is not found
+            throw new RuntimeException("News with ID " + id + " not found");
+        }
+    }
+
+    public void deleteNews(Long id) {
+        if (newsRepository.existsById(id)) {
+            newsRepository.deleteById(id);
+        } else {
+            // Handle the case where the News entity with the given ID is not found
+            throw new RuntimeException("News with ID " + id + " not found");
+        }
     }
 }

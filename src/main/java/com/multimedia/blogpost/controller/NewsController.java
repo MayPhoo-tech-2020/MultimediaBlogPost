@@ -26,7 +26,7 @@ public class NewsController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<News> createNews(
             @RequestParam("title") String title,
-            @RequestParam("description") String description,            
+            @RequestParam("description") String description,
             @RequestParam(value = "images", required = false) MultipartFile[] images,
             @RequestParam(value = "audios", required = false) MultipartFile[] audios,
             @RequestParam(value = "videos", required = false) MultipartFile[] videos) {
@@ -86,5 +86,79 @@ public class NewsController {
     public ResponseEntity<List<News>> getAllNews() {
         List<News> newsList = newsService.getAllNews();
         return ResponseEntity.ok(newsList);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<News> updateNews(
+            @PathVariable Long id,
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam(value = "images", required = false) MultipartFile[] images,
+            @RequestParam(value = "audios", required = false) MultipartFile[] audios,
+            @RequestParam(value = "videos", required = false) MultipartFile[] videos) {
+
+        List<Image> imageList = new ArrayList<>();
+        if (images != null) {
+            for (MultipartFile file : images) {
+                try {
+                    byte[] bytes = file.getBytes();
+                    String base64Image = java.util.Base64.getEncoder().encodeToString(bytes);
+                    imageList.add(Image.builder().url(base64Image).build());
+                } catch (IOException e) {
+                    return ResponseEntity.badRequest().build();
+                }
+            }
+        }
+
+        List<Audio> audioList = new ArrayList<>();
+        if (audios != null) {
+            for (MultipartFile file : audios) {
+                try {
+                    byte[] bytes = file.getBytes();
+                    String base64Audio = java.util.Base64.getEncoder().encodeToString(bytes);
+                    audioList.add(Audio.builder().url(base64Audio).build());
+                } catch (IOException e) {
+                    return ResponseEntity.badRequest().build();
+                }
+            }
+        }
+
+        List<Video> videoList = new ArrayList<>();
+        if (videos != null) {
+            for (MultipartFile file : videos) {
+                try {
+                    byte[] bytes = file.getBytes();
+                    String base64Video = java.util.Base64.getEncoder().encodeToString(bytes);
+                    videoList.add(Video.builder().url(base64Video).build());
+                } catch (IOException e) {
+                    return ResponseEntity.badRequest().build();
+                }
+            }
+        }
+
+        News updatedNews = News.builder()
+                               .title(title)
+                               .description(description)
+                               .images(imageList)
+                               .audios(audioList)
+                               .videos(videoList)
+                               .build();
+
+        try {
+            News savedNews = newsService.updateNews(id, updatedNews);
+            return ResponseEntity.ok(savedNews);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteNews(@PathVariable Long id) {
+        try {
+            newsService.deleteNews(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
