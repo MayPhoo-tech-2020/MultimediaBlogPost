@@ -25,17 +25,14 @@ public class ProjectConfig {
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
-    @Bean
- public SecurityFilterChain securityFilterChain(HttpSecurity http)
- throws Exception {
- 
- http.csrf(
- c -> c.disable()
- );
- http.authorizeHttpRequests(
- c -> c.anyRequest().authenticated() 
- );
- 
- return http.build();
+
+  /*   @Bean
+ SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    http.httpBasic(Customizer.withDefaults()); 
+    http.authorizeHttpRequests(
+    c -> c.anyRequest().authenticated() 
+    );
+    return http.build(); 
  }
+ */
 }
