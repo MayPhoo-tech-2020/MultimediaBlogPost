@@ -77,13 +77,16 @@ public class BlogPostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBlogPost(@PathVariable Long id) {
+    public ResponseEntity<String> deleteBlogPost(@PathVariable Long id) {
         Optional<BlogPost> optionalBlogPost = blogPostService.findById(id);
         if (optionalBlogPost.isPresent()) {
             blogPostService.deleteById(id);
-            return ResponseEntity.noContent().build();
+            // Explicitly return 200 OK with a custom message
+            return ResponseEntity.ok("Blog post with ID " + id + " was deleted successfully.");
         } else {
-            return ResponseEntity.notFound().build();
+            // If blog post does not exist, return 404 with a custom message
+            return ResponseEntity.status(404).body("Blog post with ID " + id + " not found.");
         }
     }
+    
 }
