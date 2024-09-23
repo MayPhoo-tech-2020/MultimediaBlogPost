@@ -1,7 +1,3 @@
-Apologies for the confusion! Here's the `README.md` file in markdown format for your already created Spring Boot project:
-
----
-
 # Spring Boot Blog Post CRUD Backend
 
 This is a Spring Boot application for managing blog posts, including full CRUD (Create, Read, Update, Delete) functionality. The project is built using **Spring Boot 3.3**, **Java 17**, and **MySQL 8.0**, and it is deployed on **AWS Elastic Beanstalk** and **AWS RDS**.
